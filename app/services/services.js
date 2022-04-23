@@ -4,7 +4,7 @@ function Service() {
             url: "https://625569798646add390d6709e.mockapi.io/api/user",
             method : "GET"
         })
-    }
+    };
 
     this.addUser = function(user){
         return axios({
@@ -12,7 +12,7 @@ function Service() {
             data: user,
             method: "POST"
         })
-    }
+    };
 
     this.deleteUser = function(user_id){
         return axios({
@@ -20,7 +20,7 @@ function Service() {
             data: user,
             method: "DELETE"
         })
-    }
+    };
 
     this.getDetailUser = function(user_id){
         return axios({
@@ -28,7 +28,7 @@ function Service() {
             data: user,
             method: "GET"
         })
-    }
+    };
 
     this.UpdateUser = function(user){
         return axios({
@@ -36,6 +36,6 @@ function Service() {
             data: user,
             method: "UPDATE"
         })
-    }
+    };
 
 }
