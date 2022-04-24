@@ -5,6 +5,7 @@ function getEleId(id){
 // var user = new User();
 var service = new Service();
 var user_arr = [];
+var userNameDeleted = "";
 BindingUserList();
 function validateUserInfo(userName, fullName, passWord, email, image, userType, langugage, description){
     var is_valid = true;
@@ -100,9 +101,10 @@ function renderUserList(arr){
             <td>${arr[index].email}</td>
             <td>${arr[index].ngonNgu}</td>
             <td>${arr[index].loaiND}</td>
-            <td><button class="btn btn-primary">Sửa</button></td>
-            <td><button class="btn btn-danger">Xoá</button></td>
-            
+            <td><button class="btn btn-primary" class="btn btn-success"
+            data-toggle="modal"
+            data-target="#myModal" onclick = "suaUser(${arr[index].id})">Sửa</button></td>
+            <td><button class="btn btn-danger" id="XoaND"  data-toggle="modal" data-target="#deleteModalId" onclick="deleteUser(${arr[index].id})">Xoá</button></td>
         </tr>
         `
         
@@ -129,4 +131,48 @@ function addUser(){
         console.log(error);
     });
     
+}
+
+function deleteUser(user_id){
+    userNameDeleted = user_id;
+    console.log(`userNameDeleted:${userNameDeleted}`);
+}
+
+function confirmDeleteUser(){
+    promiss = service.deleteUser(userNameDeleted);
+    promiss
+    .then(function(result){
+        userNameDeleted = "";
+        console.log(result);
+        BindingUserList();
+        getEleId("userModalDeletedClose").click();
+
+    })
+    .catch(function(error){
+        console.log(result);
+    });
+}
+
+function loadUserDetail(user_id){
+    promiss = service.getDetailUser(user_id);
+    promiss
+    .then(function(result){
+        user = result.data;
+        getEleId("TaiKhoan").value = user.taiKhoan;
+        getEleId("HoTen").value = user.hoTen;
+        getEleId("MatKhau").value = user.matKhau;
+        getEleId("Email").value = user.email;
+        getEleId("HinhAnh").value = user.hinhAnh;
+        getEleId("loaiNguoiDung").value = user.loaiND;
+        getEleId("loaiNgonNgu").value = user.ngonNgu;
+        getEleId("MoTa").value = user.moTa;
+        
+    })
+    .catch(function(error){
+        console.log(result);
+    });
+}
+
+function suaUser(user_id){
+    loadUserDetail(user_id);
 }

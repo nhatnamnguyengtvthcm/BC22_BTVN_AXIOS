@@ -16,14 +16,12 @@ function Service() {
     this.deleteUser = function(user_id){
         return axios({
             url: `https://625569798646add390d6709e.mockapi.io/api/User/${user_id}`,
-            data: user,
             method: "DELETE"
         })
     }
     this.getDetailUser = function(user_id){
         return axios({
             url: `https://625569798646add390d6709e.mockapi.io/api/User/${user_id}`,
-            data: user,
             method: "GET"
         })
     }
