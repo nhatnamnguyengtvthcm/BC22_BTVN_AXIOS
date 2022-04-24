@@ -1,10 +1,11 @@
-function User(userName, fullName, passWord, email, image, userType, langugage, description){
-    this.userName = userName;
-    this.fullName = fullName;
-    this.passWord = passWord;
+function User(taiKhoan, hoTen, matKhau, email, hinhAnh, loaiND, ngonNgu, moTa){
+    this.taiKhoan = taiKhoan;
+    this.hoTen = hoTen;
+    this.matKhau = matKhau;
     this.email = email;
-    this.image = image;
-    this.userType = userType;
-    this.langugage = langugage;
-    this.description = description;
+    this.hinhAnh = hinhAnh;
+    this.loaiND = loaiND;
+    this.ngonNgu = ngonNgu;
+    this.moTa = moTa;
 }
+
