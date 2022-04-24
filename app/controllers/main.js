@@ -5,21 +5,25 @@ function getEleId(id){
 // var user = new User();
 var service = new Service();
 var user_arr = [];
-var userNameDeleted = "";
+var userIdDeleted = "";
+var userIdUpdated = "";
+var user
 BindingUserList();
-function validateUserInfo(userName, fullName, passWord, email, image, userType, langugage, description){
+function validateUserInfo(userName, fullName, passWord, email, image, userType, langugage, description, is_new  = true){
     var is_valid = true;
-   
-    for (let index = 0; index < user_arr.length; index++) {
-        console.log(user_arr[index].taiKhoan);
-        if(user_arr[index].taiKhoan == userName){
-            console.log("invalid username");
-            getEleId("messageUserName").innerHTML = "UserName has exists!";
-            getEleId("messageUserName").style.color = "red";
-            is_valid &= false;
-            break; 
+    if (is_new){
+        for (let index = 0; index < user_arr.length; index++) {
+            console.log(user_arr[index].taiKhoan);
+            if(user_arr[index].taiKhoan == userName){
+                console.log("invalid username");
+                getEleId("messageUserName").innerHTML = "UserName has exists!";
+                getEleId("messageUserName").style.color = "red";
+                is_valid &= false;
+                break; 
+            }
         }
     }
+   
     var regexFullName = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
     console.log(`regexFullName:${fullName.match(regexFullName)}`)
     if (!fullName.match(regexFullName)){
@@ -55,7 +59,7 @@ function validateUserInfo(userName, fullName, passWord, email, image, userType, 
     return is_valid;
 }
 
-function getUerInfo(){
+function getUerInfo(is_new=true){
     var taiKhoan = getEleId("TaiKhoan").value;
     var hoTen = getEleId("HoTen").value;
     var matKhau = getEleId("MatKhau").value;
@@ -65,7 +69,7 @@ function getUerInfo(){
     var ngonNgu = getEleId("loaiNgonNgu").value;
     var moTa = getEleId("MoTa").value;
     user = null;
-    if (validateUserInfo(taiKhoan, hoTen, matKhau, email, hinhAnh, loaiND, ngonNgu, moTa)) {
+    if (validateUserInfo(taiKhoan, hoTen, matKhau, email, hinhAnh, loaiND, ngonNgu, moTa, is_new)) {
         user = new User(taiKhoan, hoTen, matKhau, email, hinhAnh, loaiND, ngonNgu, moTa);
 
     }
@@ -74,6 +78,7 @@ function getUerInfo(){
 }
 
 function BindingUserList(){
+    document.getElementsByClassName("message").innerHTML = "";
     var promiss = service.fetchData();
     promiss
     .then(function (result) {
@@ -134,15 +139,15 @@ function addUser(){
 }
 
 function deleteUser(user_id){
-    userNameDeleted = user_id;
-    console.log(`userNameDeleted:${userNameDeleted}`);
+    userIdDeleted = user_id;
+    console.log(`userIdDeleted:${userIdDeleted}`);
 }
 
 function confirmDeleteUser(){
-    promiss = service.deleteUser(userNameDeleted);
+    promiss = service.deleteUser(userIdDeleted);
     promiss
     .then(function(result){
-        userNameDeleted = "";
+        userIdDeleted = "";
         console.log(result);
         BindingUserList();
         getEleId("userModalDeletedClose").click();
@@ -173,6 +178,51 @@ function loadUserDetail(user_id){
     });
 }
 
+
+
 function suaUser(user_id){
+    console.log("in suaUser");
+    var messages = document.getElementsByClassName("message");
+    console.log(messages);
+    Array.prototype.forEach.call(messages, function(message) {
+        // Do stuff here
+        message.innerHTML = "";
+    });
+   
+    userIdUpdated = user_id;
     loadUserDetail(user_id);
+    getEleId("addUserBtn").style.display = "none";
+    getEleId("upadateUserBtn").style.display = "block";
+   
+}
+
+function themUser(){
+    var messages = document.getElementsByClassName("message");
+    Array.prototype.forEach.call(messages, function(message) {
+        // Do stuff here
+        message.innerHTML = "";
+    });
+    getEleId("addUserBtn").style.display = "block";
+    getEleId("upadateUserBtn").style.display = "none";
+}
+
+function updateUser(user_id){
+    var user = getUerInfo(false);
+    console.log(`user:${user}`);
+    if(user == null){
+        console.log("return user null");
+        // getEleId("userModalClose").click();
+        return;
+    }
+    var promiss = service.UpdateUser(user, userIdUpdated);
+    promiss
+    .then (function(result){
+        userIdUpdated = "";
+        BindingUserList();
+        console.log(result);
+        getEleId("userModalClose").click();
+    })
+    .catch(function(error){
+        console.log(error);
+    });
 }
