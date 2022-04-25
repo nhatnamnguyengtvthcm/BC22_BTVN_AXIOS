@@ -184,10 +184,15 @@ function suaUser(user_id){
     console.log("in suaUser");
     var messages = document.getElementsByClassName("message");
     console.log(messages);
-    Array.prototype.forEach.call(messages, function(message) {
-        // Do stuff here
-        message.innerHTML = "";
-    });
+    // Array.prototype.forEach.call(messages, function(message) {
+    //     // Do stuff here
+    //     message.innerHTML = "";
+    // });
+    for(var i = 0; i<messages.length; i++){
+        messages[i].innerHTML = "";
+        inputs[i].value = "";
+    }
+    
    
     userIdUpdated = user_id;
     loadUserDetail(user_id);
@@ -198,10 +203,21 @@ function suaUser(user_id){
 
 function themUser(){
     var messages = document.getElementsByClassName("message");
-    Array.prototype.forEach.call(messages, function(message) {
-        // Do stuff here
-        message.innerHTML = "";
-    });
+    // Array.prototype.forEach.call(messages, function(message) {
+    //     // Do stuff here
+    //     console.log(message);
+    //     message.innerHTML = "";
+    // });
+    var inputs = document.querySelectorAll("input");
+   
+    // messages.forEach((message) => {
+    //     console.log(message);
+    //     message.innerHTML = ""
+    // })
+    for(var i = 0; i<messages.length; i++){
+        messages[i].innerHTML = "";
+        inputs[i].value = "";
+    }
     getEleId("addUserBtn").style.display = "block";
     getEleId("upadateUserBtn").style.display = "none";
 }

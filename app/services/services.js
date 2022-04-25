@@ -26,7 +26,7 @@ function Service() {
         })
     }
 
-    this.UpdateUser = function(user, user_id){
+    this.UpdateUser = function(user, user_id){ //update viết thường
         return axios({
             url: `https://625569798646add390d6709e.mockapi.io/api/User/${user_id}`,
             data: user,
